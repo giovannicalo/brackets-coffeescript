@@ -5,6 +5,8 @@ It is meant as a temporary solution to use while waiting for an improved [CodeMi
 
 Improved syntax highlighting comes at the cost of some advanced features of the official mode.
 
+![Sample](http://i.imgur.com/yXwiA1i.png)
+
 ## Installation
 The extension isn't listed in the [Brackets Extension Registry](https://brackets-registry.aboutweb.com/) yet, thus requiring manual installation.
 
