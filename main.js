@@ -2,7 +2,7 @@ define(function(require, exports, module) {
 	"use strict";
 	var LanguageManager = brackets.getModule("language/LanguageManager");
 	var CodeMirror = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror");
-	CodeMirror.defineMode("coffeescriptimproved", function (config) {
+	CodeMirror.defineMode("coffeescriptimproved", function(config) {
 		var constants = [
 			"false",
 			"no",
@@ -77,6 +77,13 @@ define(function(require, exports, module) {
 						}
 					}
 				}
+				if (state.inArguments) {
+					if (stream.match(/^\)/, false)) {
+						state.inArguments = false;
+					}
+				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
+					state.inArguments = true;
+				}
 				if (state.inThis) {
 					if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
 						state.inThis = false;
@@ -95,6 +102,16 @@ define(function(require, exports, module) {
 						state.inThis = true;
 						highlight = "keyword";
 					}
+				}
+				if (state.inArgument) {
+					if (stream.match(/^[\,\)\t ]/, false)) {
+						state.inArgument = false;
+					} else {
+						highlight = "def";
+					}
+				} else if ((state.inArguments) && (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/, false))) {
+					state.inArgument = true;
+					highlight = "def";
 				}
 				if (state.inFunction) {
 					if (stream.match(/^(:|=)/, false)) {
@@ -278,6 +295,7 @@ define(function(require, exports, module) {
 			},
 			startState: function() {
 				return {
+					inArguments: false,
 					inBlockComment: false,
 					inConstant: false,
 					inDefinition: false,
