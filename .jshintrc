@@ -1,0 +1,23 @@
+{
+	"browser": true,
+	"curly": true,
+	"devel": true,
+	"esnext": true,
+	"globals": {
+		"brackets": false,
+		"define": false
+	},
+	"immed": true,
+	"indent": 4,
+	"latedef": true,
+	"maxerr": 100,
+	"noarg": true,
+	"node": true,
+	"nonbsp": true,
+	"nonstandard": true,
+	"quotmark": "double",
+	"strict": true,
+	"sub": true,
+	"undef": true,
+	"unused": true
+}

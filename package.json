@@ -1,0 +1,34 @@
+{
+	"author": {
+		"email": "",
+		"name": "Giovanni Calò",
+		"url": ""
+	},
+	"bugs": {
+		"url": "http://www.github.com/giovannicalo/brackets-coffeescript/issues"
+	},
+	"config": {},
+	"dependencies": {},
+	"description": "Improves syntax highlighting for CoffeeScript.",
+	"devDependencies": {},
+	"engines": {
+		"brackets": "^1.1.0"
+	},
+	"homepage": "http://www.github.com/giovannicalo/brackets-coffeescript",
+	"keywords": [
+		"coffee",
+		"coffeescript",
+		"highlight",
+		"highlighting",
+		"syntax"
+	],
+	"license": "",
+	"main": "main.js",
+	"name": "brackets-coffeescript",
+	"repository": {
+		"type": "git",
+		"url": "http://www.github.com/giovannicalo/brackets-coffeescript.git"
+	},
+	"title": "CoffeeScript",
+	"version": "0.0.0"
+}
