@@ -3,6 +3,8 @@ An extension for [Brackets](https://github.com/adobe/brackets) that improves [Co
 
 It is meant as a temporary solution to use while waiting for an improved [CodeMirror](https://github.com/codemirror/CodeMirror) mode.
 
+It uses the same coloring conventions as the JavaScript mode.
+
 Improved syntax highlighting comes at the cost of some advanced features of the official mode.
 
 ![Sample](http://i.imgur.com/EW9VXko.png)
