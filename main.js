@@ -205,7 +205,10 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.inString1) {
-					if (stream.match(/^\\"/, false)) {
+					if (stream.match(/^\\\\"/, false)) {
+						highlight = "string";
+						stream.next();
+					} else if (stream.match(/^\\"/, false)) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^"/, false)) {
@@ -219,7 +222,10 @@ define(function(require, exports, module) {
 					highlight = "string";
 				}
 				if (state.inString2) {
-					if (stream.match(/^\\'/, false)) {
+					if (stream.match(/^\\\\'/, false)) {
+						highlight = "string";
+						stream.next();
+					} else if (stream.match(/^\\'/, false)) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^'/, false)) {
