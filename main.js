@@ -115,7 +115,7 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.parameter) {
-					if ((stream.sol()) || (stream.match(/^[\,\)\t ]/, false))) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
 						state.parameter = false;
 					} else {
 						highlight = "def";
