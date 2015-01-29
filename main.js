@@ -1,8 +1,8 @@
-define(function(require, exports, module) {
+define(function() {
 	"use strict";
 	var language_manager = brackets.getModule("language/LanguageManager");
 	var code_mirror = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror");
-	code_mirror.defineMode("coffeescriptimproved", function(config) {
+	code_mirror.defineMode("coffeescriptimproved", function() {
 		var constant_list = [
 			"false",
 			"no",
@@ -61,6 +61,7 @@ define(function(require, exports, module) {
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
 		var whitespace = "[\\t ]*";
+		var i = 0;
 		return {
 			token: function(stream, state) {
 				var highlight = "";
@@ -72,7 +73,8 @@ define(function(require, exports, module) {
 						highlight = "keyword";
 					}
 				}
-				if (match = stream.match(new RegExp("^" + keyword), false)) {
+				match = stream.match(new RegExp("^" + keyword), false);
+				if (match) {
 					if (stream.match(new RegExp("^(" + keyword + ")(" + not_identifier + "|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
@@ -101,7 +103,8 @@ define(function(require, exports, module) {
 						highlight = "keyword";
 					}
 				}
-				if (match = stream.match(new RegExp("^@" + identifier), false)) {
+				match = stream.match(new RegExp("^@" + identifier), false);
+				if (match) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(new RegExp("^" + not_identifier), false)) {
@@ -154,7 +157,8 @@ define(function(require, exports, module) {
 						highlight = "def";
 					}
 				}
-				if (match = stream.match(new RegExp("^" + identifier + "(\\[.*\\])*" + whitespace + "=([^=]|$)"), false)) {
+				match = stream.match(new RegExp("^" + identifier + "(\\[.*\\])*" + whitespace + "=([^=]|$)"), false);
+				if (match) {
 					state.variable = true;
 					highlight = "def";
 					//if ((match = match[0].match((new RegExp("^" + identifier))[0]) && (defined.indexOf(match) === -1)) {
@@ -182,7 +186,8 @@ define(function(require, exports, module) {
 						highlight = "number";
 					}
 				}
-				if (match = stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false)) {
+				match = stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false);
+				if (match) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(new RegExp("^" + not_identifier), false)) {
@@ -202,7 +207,8 @@ define(function(require, exports, module) {
 						highlight = "string";
 					}
 				}
-				if (match = stream.match(new RegExp("^" + constant), false)) {
+				match = stream.match(new RegExp("^" + constant), false);
+				if (match) {
 					if (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
@@ -259,7 +265,7 @@ define(function(require, exports, module) {
 						state.regexp = false;
 						highlight = "string";
 						stream.next();
-						for (var i = 0; i < 3; i++) {
+						for (i = 0; i < 3; i++) {
 							if (stream.match(/^(g|m|i)/, false)) {
 								stream.next();
 							} else {
