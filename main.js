@@ -57,7 +57,7 @@ define(function(require, exports, module) {
 				var highlight = "";
 				var match = null;
 				if (state.keyword) {
-					if (stream.match(/^[^a-z]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[^a-z]/, false))) {
 						state.keyword = false;
 					} else {
 						highlight = "keyword";
@@ -85,7 +85,7 @@ define(function(require, exports, module) {
 					state.parameter_list = true;
 				}
 				if (state.this) {
-					if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[^a-zA-Z0-9\$_]/, false))) {
 						state.this = false;
 					} else {
 						highlight = "keyword";
@@ -104,7 +104,7 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.parameter) {
-					if (stream.match(/^[\,\)\t ]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[\,\)\t ]/, false))) {
 						state.parameter = false;
 					} else {
 						highlight = "def";
@@ -114,7 +114,7 @@ define(function(require, exports, module) {
 					highlight = "def";
 				}
 				if (state.function) {
-					if (stream.match(/^(:|=)/, false)) {
+					if ((stream.sol()) || (stream.match(/^(:|=)/, false))) {
 						state.function = false;
 					} else {
 						highlight = "def";
@@ -124,7 +124,7 @@ define(function(require, exports, module) {
 					highlight = "def";
 				}
 				if (state.property) {
-					if (stream.match(/^:/, false)) {
+					if ((stream.sol()) || (stream.match(/^:/, false))) {
 						state.property = false;
 					} else {
 						highlight = "def";
@@ -134,7 +134,7 @@ define(function(require, exports, module) {
 					highlight = "def";
 				}
 				if (state.variable) {
-					if (stream.match(/^[=\[]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[=\[]/, false))) {
 						state.variable = false;
 					} else {
 						highlight = "def";
@@ -147,7 +147,7 @@ define(function(require, exports, module) {
 					//}
 				}
 				if (state.method) {
-					if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[^a-zA-Z0-9\$_]/, false))) {
 						state.method = false;
 					} else {
 						highlight = "def";
@@ -165,7 +165,7 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.number) {
-					if (stream.match(/^[^0-9a-fA-FoxOX\+\-\.]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[^0-9a-fA-FoxOX\+\-\.]/, false))) {
 						state.number = false;
 					} else {
 						highlight = "number";
@@ -184,7 +184,7 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.constant) {
-					if (stream.match(/^[^a-z]/, false)) {
+					if ((stream.sol()) || (stream.match(/^[^a-z]/, false))) {
 						state.constant = false;
 					} else {
 						highlight = "string";
@@ -242,7 +242,7 @@ define(function(require, exports, module) {
 					if (stream.match(/^\\\//, false)) {
 						highlight = "string";
 						stream.next();
-					} else if (stream.match(/^\//, false)) {
+					} else if ((stream.sol()) || (stream.match(/^\//, false))) {
 						state.regexp = false;
 						highlight = "string";
 						stream.next();
