@@ -1,9 +1,9 @@
 define(function(require, exports, module) {
 	"use strict";
-	var LanguageManager = brackets.getModule("language/LanguageManager");
-	var CodeMirror = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror");
-	CodeMirror.defineMode("coffeescriptimproved", function(config) {
-		var constants = [
+	var language_manager = brackets.getModule("language/LanguageManager");
+	var code_mirror = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror");
+	code_mirror.defineMode("coffeescriptimproved", function(config) {
+		var constant_list = [
 			"false",
 			"no",
 			"null",
@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 			"Infinity",
 			"NaN"
 		];
-		var keywords = [
+		var keyword_list = [
 			"and",
 			"break",
 			"by",
@@ -56,37 +56,37 @@ define(function(require, exports, module) {
 			token: function(stream, state) {
 				var highlight = "";
 				var match = null;
-				if (state.inKeyword) {
+				if (state.keyword) {
 					if (stream.match(/^[^a-z]/, false)) {
-						state.inKeyword = false;
+						state.keyword = false;
 					} else {
 						highlight = "keyword";
 					}
-				} else if (match = stream.match(new RegExp("^" + keywords.join("|")), false)) {
-					if ((match[0].length === match.input.length) || (stream.match(new RegExp("^(" + keywords.join("|") + ")[^a-zA-Z0-9\$_]"), false))) {
+				} else if (match = stream.match(new RegExp("^" + keyword_list.join("|")), false)) {
+					if ((match[0].length === match.input.length) || (stream.match(new RegExp("^(" + keyword_list.join("|") + ")[^a-zA-Z0-9\$_]"), false))) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
-							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + keywords.join("|") + ")"), false)) {
-								state.inKeyword = true;
+							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + keyword_list.join("|") + ")"), false)) {
+								state.keyword = true;
 								highlight = "keyword";
 							}
 							stream.next();
 						} else {
-							state.inKeyword = true;
+							state.keyword = true;
 							highlight = "keyword";
 						}
 					}
 				}
-				if (state.inArguments) {
+				if (state.parameter_list) {
 					if (stream.match(/^\)/, false)) {
-						state.inArguments = false;
+						state.parameter_list = false;
 					}
 				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
-					state.inArguments = true;
+					state.parameter_list = true;
 				}
-				if (state.inThis) {
+				if (state.this) {
 					if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
-						state.inThis = false;
+						state.this = false;
 					} else {
 						highlight = "keyword";
 					}
@@ -94,61 +94,61 @@ define(function(require, exports, module) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(/^[^a-zA-Z0-9\$_]@/, false)) {
-							state.inThis = true;
+							state.this = true;
 							highlight = "keyword";
 						}
 						stream.next();
 					} else {
-						state.inThis = true;
+						state.this = true;
 						highlight = "keyword";
 					}
 				}
-				if (state.inArgument) {
+				if (state.parameter) {
 					if (stream.match(/^[\,\)\t ]/, false)) {
-						state.inArgument = false;
+						state.parameter = false;
 					} else {
 						highlight = "def";
 					}
-				} else if ((state.inArguments) && (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/, false))) {
-					state.inArgument = true;
+				} else if ((state.parameter_list) && (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/, false))) {
+					state.parameter = true;
 					highlight = "def";
 				}
-				if (state.inFunction) {
+				if (state.function) {
 					if (stream.match(/^(:|=)/, false)) {
-						state.inFunction = false;
+						state.function = false;
 					} else {
 						highlight = "def";
 					}
 				} else if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*(:|=)[\t ]*(\([^\n\r]*\))?[\t ]*(->|=>)/, false)) {
-					state.inFunction = true;
+					state.function = true;
 					highlight = "def";
 				}
-				if (state.inProperty) {
+				if (state.property) {
 					if (stream.match(/^:/, false)) {
-						state.inProperty = false;
+						state.property = false;
 					} else {
 						highlight = "def";
 					}
 				} else if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*:/, false)) {
-					state.inProperty = true;
+					state.property = true;
 					highlight = "def";
 				}
-				if (state.inDefinition) {
+				if (state.variable) {
 					if (stream.match(/^[=\[]/, false)) {
-						state.inDefinition = false;
+						state.variable = false;
 					} else {
 						highlight = "def";
 					}
 				} else if (match = stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*(\[.*\])*[\t ]*=([^=]|$)/, false)) {
-					state.inDefinition = true;
+					state.variable = true;
 					highlight = "def";
 					//if ((match = match[0].match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/)[0]) && (defined.indexOf(match) === -1)) {
 					//	defined.push(match);
 					//}
 				}
-				if (state.inMethod) {
+				if (state.method) {
 					if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
-						state.inMethod = false;
+						state.method = false;
 					} else {
 						highlight = "def";
 					}
@@ -157,16 +157,16 @@ define(function(require, exports, module) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(/^\S\.[a-zA-Z\$\_][a-zA-Z0-9\$_]*/, false)) {
-							state.inMethod = true;
+							state.method = true;
 						}
 						stream.next();
 					} else {
-						state.inMethod = true;
+						state.method = true;
 					}
 				}
-				if (state.inNumber) {
+				if (state.number) {
 					if (stream.match(/^[^0-9\.]/, false)) {
-						state.inNumber = false;
+						state.number = false;
 					} else {
 						highlight = "number";
 					}
@@ -174,37 +174,37 @@ define(function(require, exports, module) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(/^[^a-zA-Z0-9\$_][0-9]/, false)) {
-							state.inNumber = true;
+							state.number = true;
 							highlight = "number";
 						}
 						stream.next();
 					} else {
-						state.inNumber = true;
+						state.number = true;
 						highlight = "number";
 					}
 				}
-				if (state.inConstant) {
+				if (state.constant) {
 					if (stream.match(/^[^a-z]/, false)) {
-						state.inConstant = false;
+						state.constant = false;
 					} else {
 						highlight = "string";
 					}
-				} else if (match = stream.match(new RegExp("^" + constants.join("|")), false)) {
-					if ((match[0].length === match.input.length) || (stream.match(new RegExp("^(" + constants.join("|") + ")[^a-zA-Z0-9\$_]"), false))) {
+				} else if (match = stream.match(new RegExp("^" + constant_list.join("|")), false)) {
+					if ((match[0].length === match.input.length) || (stream.match(new RegExp("^(" + constant_list.join("|") + ")[^a-zA-Z0-9\$_]"), false))) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
-							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + constants.join("|") + ")"), false)) {
-								state.inConstant = true;
+							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + constant_list.join("|") + ")"), false)) {
+								state.constant = true;
 								highlight = "string";
 							}
 							stream.next();
 						} else {
-							state.inConstant = true;
+							state.constant = true;
 							highlight = "string";
 						}
 					}
 				}
-				if (state.inString1) {
+				if (state.string_1) {
 					if (stream.match(/^\\\\"/, false)) {
 						highlight = "string";
 						stream.next();
@@ -212,16 +212,16 @@ define(function(require, exports, module) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^"/, false)) {
-						state.inString1 = false;
+						state.string_1 = false;
 						highlight = "string";
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.inString2) && (stream.match(/^"/, false))) {
-					state.inString1 = true;
+				} else if ((!state.string_2) && (stream.match(/^"/, false))) {
+					state.string_1 = true;
 					highlight = "string";
 				}
-				if (state.inString2) {
+				if (state.string_2) {
 					if (stream.match(/^\\\\'/, false)) {
 						highlight = "string";
 						stream.next();
@@ -229,21 +229,21 @@ define(function(require, exports, module) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^'/, false)) {
-						state.inString2 = false;
+						state.string_2 = false;
 						highlight = "string";
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.inString1) && (stream.match(/^'/, false))) {
-					state.inString2 = true;
+				} else if ((!state.string_1) && (stream.match(/^'/, false))) {
+					state.string_2 = true;
 					highlight = "string";
 				}
-				if (state.inRegExp) {
+				if (state.regexp) {
 					if (stream.match(/^\\\//, false)) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^\//, false)) {
-						state.inRegExp = false;
+						state.regexp = false;
 						highlight = "string";
 						stream.next();
 						for (var i = 0; i < 3; i++) {
@@ -257,42 +257,42 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.inString1) && (!state.inString2) && (stream.match(/\/((?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\//, false))) {
-					state.inRegExp = true;
+				} else if ((!state.string_1) && (!state.string_2) && (stream.match(/\/((?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\//, false))) {
+					state.regexp = true;
 					highlight = "string";
 				}
-				if (state.inBlockComment) {
+				if (state.comment_block) {
 					if (stream.match(/^###/, false)) {
-						state.inBlockComment = false;
+						state.comment_block = false;
 						highlight = "comment";
 						stream.next();
 						stream.next();
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.inString1) && (!state.inString2) && (stream.match(/^###/, false))) {
-					state.inBlockComment = true;
+				} else if ((!state.string_1) && (!state.string_2) && (stream.match(/^###/, false))) {
+					state.comment_block = true;
 					highlight = "comment";
 					stream.next();
 					stream.next();
 				}
-				if (state.inLineComment) {
+				if (state.comment_line) {
 					if (stream.sol()) {
-						state.inLineComment = false;
+						state.comment_line = false;
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.inBlockComment) && (!state.inString1) && (!state.inString2) && (stream.match(/^#/, false))) {
+				} else if ((!state.comment_block) && (!state.string_1) && (!state.string_2) && (stream.match(/^#/, false))) {
 					if (stream.column() > 1) {
 						stream.backUp(2);
 						if (!stream.match(/^###/, false)) {
-							state.inLineComment = true;
+							state.comment_line = true;
 							highlight = "comment";
 						}
 						stream.next();
 						stream.next();
 					} else {
-						state.inLineComment = true;
+						state.comment_line = true;
 						highlight = "comment";
 					}
 				}
@@ -301,27 +301,28 @@ define(function(require, exports, module) {
 			},
 			startState: function() {
 				return {
-					inArguments: false,
-					inBlockComment: false,
-					inConstant: false,
-					inDefinition: false,
-					inFunction: false,
-					inKeyword: false,
-					inLineComment: false,
-					inMethod: false,
-					inNumber: false,
-					inThis: false,
-					inProperty: false,
-					inRegExp: false,
-					inString1: false,
-					inString2: false
+					comment_block: false,
+					comment_line: false,
+					constant: false,
+					function: false,
+					keyword: false,
+					method: false,
+					number: false,
+					parameter: false,
+					parameter_list: false,
+					property: false,
+					regexp: false,
+					string_1: false,
+					string_2: false,
+					this: false,
+					variable: false
 				};
 			}
 		};
 	});
-	CodeMirror.defineMIME("text/coffeescript", "coffeescriptimproved");
-	LanguageManager.getLanguage("coffeescript").removeFileExtension("coffee");
-	LanguageManager.defineLanguage("coffeescriptimproved", {
+	code_mirror.defineMIME("text/coffeescript", "coffeescriptimproved");
+	language_manager.getLanguage("coffeescript").removeFileExtension("coffee");
+	language_manager.defineLanguage("coffeescriptimproved", {
 		fileExtensions: ["coffee"],
 		mode: "coffeescriptimproved",
 		name: "CoffeeScript"
