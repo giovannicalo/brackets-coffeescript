@@ -63,7 +63,7 @@ define(function(require, exports, module) {
 						highlight = "keyword";
 					}
 				} else if (match = stream.match(new RegExp("^" + keyword_list.join("|")), false)) {
-					if ((match[0].length === match.input.length) || (stream.match(new RegExp("^(" + keyword_list.join("|") + ")[^a-zA-Z0-9\$_]"), false))) {
+					if (stream.match(new RegExp("^(" + keyword_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
 							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + keyword_list.join("|") + ")"), false)) {
@@ -190,7 +190,7 @@ define(function(require, exports, module) {
 						highlight = "string";
 					}
 				} else if (match = stream.match(new RegExp("^" + constant_list.join("|")), false)) {
-					if ((match[0].length === match.input.length) || (stream.match(new RegExp("^(" + constant_list.join("|") + ")[^a-zA-Z0-9\$_]"), false))) {
+					if (stream.match(new RegExp("^(" + constant_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
 							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + constant_list.join("|") + ")"), false)) {
