@@ -52,22 +52,31 @@ define(function(require, exports, module) {
 			"while"
 		];
 		//var defined = [];
+		var constant = constant_list.join("|");
+		var identifier = "[a-zA-Z\\$_]+[a-zA-Z0-9\\$_]*";
+		var keyword = keyword_list.join("|");
+		var number = "((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\\d]*\\.?[\\d]+(?:e[\\+\\-]\\d+)?))";
+		var regexp = "\\/((?![*+?])(?:[^\\r\\n\\[/\\\\]|\\\\.|\\[(?:[^\\r\\n\\]\\\\]|\\\\.)*\\])+)\\/";
+		var not_identifier = "[^a-zA-Z0-9\\$_]";
+		var not_keyword = "[^a-z]";
+		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
+		var whitespace = "[\\t ]*";
 		return {
 			token: function(stream, state) {
 				var highlight = "";
 				var match = null;
 				if (state.keyword) {
-					if ((stream.sol()) || (stream.match(/^[^a-z]/, false))) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
 						state.keyword = false;
 					} else {
 						highlight = "keyword";
 					}
 				}
-				if (match = stream.match(new RegExp("^" + keyword_list.join("|")), false)) {
-					if (stream.match(new RegExp("^(" + keyword_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
+				if (match = stream.match(new RegExp("^" + keyword), false)) {
+					if (stream.match(new RegExp("^(" + keyword + ")(" + not_identifier + "|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
-							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_]"), false)) {
+							if (stream.match(new RegExp("^" + not_identifier), false)) {
 								state.keyword = true;
 								highlight = "keyword";
 							}
@@ -86,16 +95,16 @@ define(function(require, exports, module) {
 					state.parameter_list = true;
 				}
 				if (state.this) {
-					if ((stream.sol()) || (stream.match(/^[^a-zA-Z0-9\$_]/, false))) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
 						state.this = false;
 					} else {
 						highlight = "keyword";
 					}
 				}
-				if (match = stream.match(/^@[a-zA-Z0-9\$_]/, false)) {
+				if (match = stream.match(new RegExp("^@" + identifier), false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
-						if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
+						if (stream.match(new RegExp("^" + not_identifier), false)) {
 							state.this = true;
 							highlight = "keyword";
 						}
@@ -112,7 +121,7 @@ define(function(require, exports, module) {
 						highlight = "def";
 					}
 				}
-				if ((state.parameter_list) && (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/, false))) {
+				if ((state.parameter_list) && (stream.match(new RegExp("^" + identifier), false))) {
 					state.parameter = true;
 					highlight = "def";
 				}
@@ -123,7 +132,7 @@ define(function(require, exports, module) {
 						highlight = "def";
 					}
 				}
-				if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*(:|=)[\t ]*(\([^\n\r]*\))?[\t ]*(->|=>)/, false)) {
+				if (stream.match(new RegExp("^" + identifier + whitespace + "(:|=)" + whitespace + "(\\([^\\n\\r]+\\))?" + whitespace + "(->|=>)"), false)) {
 					state.function = true;
 					highlight = "def";
 				}
@@ -134,7 +143,7 @@ define(function(require, exports, module) {
 						highlight = "def";
 					}
 				}
-				if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*:/, false)) {
+				if (stream.match(new RegExp("^" + identifier + whitespace + ":"), false)) {
 					state.property = true;
 					highlight = "def";
 				}
@@ -145,21 +154,21 @@ define(function(require, exports, module) {
 						highlight = "def";
 					}
 				}
-				if (match = stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*(\[.*\])*[\t ]*=([^=]|$)/, false)) {
+				if (match = stream.match(new RegExp("^" + identifier + "(\\[.*\\])*" + whitespace + "=([^=]|$)"), false)) {
 					state.variable = true;
 					highlight = "def";
-					//if ((match = match[0].match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/)[0]) && (defined.indexOf(match) === -1)) {
+					//if ((match = match[0].match((new RegExp("^" + identifier))[0]) && (defined.indexOf(match) === -1)) {
 					//	defined.push(match);
 					//}
 				}
 				if (state.method) {
-					if ((stream.sol()) || (stream.match(/^[^a-zA-Z0-9\$_]/, false))) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
 						state.method = false;
 					} else {
 						highlight = "def";
 					}
 				}
-				if ((stream.column() !== 0) && (stream.match(/^\.[a-zA-Z\$\_][a-zA-Z0-9\$_]*/, false))) {
+				if ((stream.column() !== 0) && (stream.match(new RegExp("^\\." + identifier), false))) {
 					stream.backUp(1);
 					if (stream.match(/^\S/, false)) {
 						state.method = true;
@@ -167,16 +176,16 @@ define(function(require, exports, module) {
 					stream.next();
 				}
 				if (state.number) {
-					if ((stream.sol()) || (stream.match(/^[^0-9a-fA-FoxOX\+\-\.]/, false))) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_number), false))) {
 						state.number = false;
 					} else {
 						highlight = "number";
 					}
 				}
-				if (match = stream.match(/^((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\d]*\.?[\d]+(?:e[\+\-]\d+)?))([^a-zA-Z0-9\$_]|$)/, false)) {
+				if (match = stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
-						if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
+						if (stream.match(new RegExp("^" + not_identifier), false)) {
 							state.number = true;
 							highlight = "number";
 						}
@@ -187,17 +196,17 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.constant) {
-					if ((stream.sol()) || (stream.match(/^[^a-z]/, false))) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
 						state.constant = false;
 					} else {
 						highlight = "string";
 					}
 				}
-				if (match = stream.match(new RegExp("^" + constant_list.join("|")), false)) {
-					if (stream.match(new RegExp("^(" + constant_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
+				if (match = stream.match(new RegExp("^" + constant), false)) {
+					if (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
-							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_]"), false)) {
+							if (stream.match(new RegExp("^" + not_identifier), false)) {
 								state.constant = true;
 								highlight = "string";
 							}
@@ -261,7 +270,7 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_1) && (!state.string_2) && (stream.match(/\/((?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\//, false))) {
+				} else if ((!state.string_1) && (!state.string_2) && (stream.match(new RegExp("^" + regexp), false))) {
 					state.regexp = true;
 					highlight = "string";
 				}
