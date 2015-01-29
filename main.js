@@ -65,7 +65,6 @@ define(function() {
 		return {
 			token: function(stream, state) {
 				var highlight = "";
-				var match = null;
 				if (state.keyword) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
 						state.keyword = false;
@@ -73,8 +72,7 @@ define(function() {
 						highlight = "keyword";
 					}
 				}
-				match = stream.match(new RegExp("^" + keyword), false);
-				if (match) {
+				if (stream.match(new RegExp("^" + keyword), false)) {
 					if (stream.match(new RegExp("^(" + keyword + ")(" + not_identifier + "|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
@@ -103,8 +101,7 @@ define(function() {
 						highlight = "keyword";
 					}
 				}
-				match = stream.match(new RegExp("^@" + identifier), false);
-				if (match) {
+				if (stream.match(new RegExp("^@" + identifier), false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(new RegExp("^" + not_identifier), false)) {
@@ -157,10 +154,10 @@ define(function() {
 						highlight = "def";
 					}
 				}
-				match = stream.match(new RegExp("^" + identifier + "(\\[.*\\])*" + whitespace + "=([^=]|$)"), false);
-				if (match) {
+				if (stream.match(new RegExp("^" + identifier + "(\\[.*\\])*" + whitespace + "=([^=]|$)"), false)) {
 					state.variable = true;
 					highlight = "def";
+					//TODO: Define match as the output of stream.match() before uncommenting
 					//if ((match = match[0].match((new RegExp("^" + identifier))[0]) && (defined.indexOf(match) === -1)) {
 					//	defined.push(match);
 					//}
@@ -186,8 +183,7 @@ define(function() {
 						highlight = "number";
 					}
 				}
-				match = stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false);
-				if (match) {
+				if (stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(new RegExp("^" + not_identifier), false)) {
@@ -207,8 +203,7 @@ define(function() {
 						highlight = "string";
 					}
 				}
-				match = stream.match(new RegExp("^" + constant), false);
-				if (match) {
+				if (stream.match(new RegExp("^" + constant), false)) {
 					if (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
