@@ -159,16 +159,12 @@ define(function(require, exports, module) {
 						highlight = "def";
 					}
 				}
-				if (stream.match(/^\.[a-zA-Z\$\_][a-zA-Z0-9\$_]*/, false)) {
-					if (stream.column() !== 0) {
-						stream.backUp(1);
-						if (stream.match(/^\S*/, false)) {
-							state.method = true;
-						}
-						stream.next();
-					} else {
+				if ((stream.column() !== 0) && (stream.match(/^\.[a-zA-Z\$\_][a-zA-Z0-9\$_]*/, false))) {
+					stream.backUp(1);
+					if (stream.match(/^\S/, false)) {
 						state.method = true;
 					}
+					stream.next();
 				}
 				if (state.number) {
 					if ((stream.sol()) || (stream.match(/^[^0-9a-fA-FoxOX\+\-\.]/, false))) {
