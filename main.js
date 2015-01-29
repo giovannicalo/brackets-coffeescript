@@ -62,7 +62,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "keyword";
 					}
-				} else if (match = stream.match(new RegExp("^" + keyword_list.join("|")), false)) {
+				}
+				if (match = stream.match(new RegExp("^" + keyword_list.join("|")), false)) {
 					if (stream.match(new RegExp("^(" + keyword_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
@@ -90,7 +91,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "keyword";
 					}
-				} else if (match = stream.match(/^@[a-zA-Z0-9\$_]/, false)) {
+				}
+				if (match = stream.match(/^@[a-zA-Z0-9\$_]/, false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
@@ -109,7 +111,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "def";
 					}
-				} else if ((state.parameter_list) && (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/, false))) {
+				}
+				if ((state.parameter_list) && (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/, false))) {
 					state.parameter = true;
 					highlight = "def";
 				}
@@ -119,7 +122,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "def";
 					}
-				} else if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*(:|=)[\t ]*(\([^\n\r]*\))?[\t ]*(->|=>)/, false)) {
+				}
+				if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*(:|=)[\t ]*(\([^\n\r]*\))?[\t ]*(->|=>)/, false)) {
 					state.function = true;
 					highlight = "def";
 				}
@@ -129,7 +133,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "def";
 					}
-				} else if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*:/, false)) {
+				}
+				if (stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*[\t ]*:/, false)) {
 					state.property = true;
 					highlight = "def";
 				}
@@ -139,7 +144,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "def";
 					}
-				} else if (match = stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*(\[.*\])*[\t ]*=([^=]|$)/, false)) {
+				}
+				if (match = stream.match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*(\[.*\])*[\t ]*=([^=]|$)/, false)) {
 					state.variable = true;
 					highlight = "def";
 					//if ((match = match[0].match(/^[a-zA-Z\$\_]+[a-zA-Z0-9\$\_]*/)[0]) && (defined.indexOf(match) === -1)) {
@@ -170,7 +176,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "number";
 					}
-				} else if (match = stream.match(/^((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\d]*\.?[\d]+(?:e[\+\-]\d+)?))([^a-zA-Z0-9\$_]|$)/, false)) {
+				}
+				if (match = stream.match(/^((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\d]*\.?[\d]+(?:e[\+\-]\d+)?))([^a-zA-Z0-9\$_]|$)/, false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
 						if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
@@ -189,7 +196,8 @@ define(function(require, exports, module) {
 					} else {
 						highlight = "string";
 					}
-				} else if (match = stream.match(new RegExp("^" + constant_list.join("|")), false)) {
+				}
+				if (match = stream.match(new RegExp("^" + constant_list.join("|")), false)) {
 					if (stream.match(new RegExp("^(" + constant_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
