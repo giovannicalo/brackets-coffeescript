@@ -66,7 +66,7 @@ define(function(require, exports, module) {
 					if (stream.match(new RegExp("^(" + keyword_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
-							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + keyword_list.join("|") + ")"), false)) {
+							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_]"), false)) {
 								state.keyword = true;
 								highlight = "keyword";
 							}
@@ -93,7 +93,7 @@ define(function(require, exports, module) {
 				} else if (match = stream.match(/^@[a-zA-Z0-9\$_]/, false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
-						if (stream.match(/^[^a-zA-Z0-9\$_]@/, false)) {
+						if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
 							state.this = true;
 							highlight = "keyword";
 						}
@@ -156,7 +156,7 @@ define(function(require, exports, module) {
 				if (stream.match(/^\.[a-zA-Z\$\_][a-zA-Z0-9\$_]*/, false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
-						if (stream.match(/^\S\.[a-zA-Z\$\_][a-zA-Z0-9\$_]*/, false)) {
+						if (stream.match(/^\S*/, false)) {
 							state.method = true;
 						}
 						stream.next();
@@ -165,15 +165,15 @@ define(function(require, exports, module) {
 					}
 				}
 				if (state.number) {
-					if (stream.match(/^[^0-9\.]/, false)) {
+					if (stream.match(/^[^0-9a-fA-FoxOX\+\-\.]/, false)) {
 						state.number = false;
 					} else {
 						highlight = "number";
 					}
-				} else if (stream.match(/^[0-9]/, false)) {
+				} else if (match = stream.match(/^((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\d]*\.?[\d]+(?:e[\+\-]\d+)?))([^a-zA-Z0-9\$_]|$)/, false)) {
 					if (stream.column() !== 0) {
 						stream.backUp(1);
-						if (stream.match(/^[^a-zA-Z0-9\$_][0-9]/, false)) {
+						if (stream.match(/^[^a-zA-Z0-9\$_]/, false)) {
 							state.number = true;
 							highlight = "number";
 						}
@@ -193,7 +193,7 @@ define(function(require, exports, module) {
 					if (stream.match(new RegExp("^(" + constant_list.join("|") + ")([^a-zA-Z0-9\$_]|$)"), false)) {
 						if (stream.column() !== 0) {
 							stream.backUp(1);
-							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_](" + constant_list.join("|") + ")"), false)) {
+							if (stream.match(new RegExp("^[^a-zA-Z0-9\$_]"), false)) {
 								state.constant = true;
 								highlight = "string";
 							}
