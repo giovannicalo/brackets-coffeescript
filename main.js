@@ -65,6 +65,24 @@ define(function() {
 		return {
 			token: function(stream, state) {
 				var highlight = "";
+				if (!state.isolated) {
+					if (stream.sol()) {
+						console.log("Start: " + stream.column() + ": SOL");
+						state.isolated = true;
+					} else {
+						stream.backUp(1);
+						if (stream.match(new RegExp("^" + not_identifier), false)) {
+							state.isolated = true;
+						}
+						stream.next();
+					}
+				} else if (!stream.sol()) {
+					stream.backUp(1);
+					if (!stream.match(new RegExp("^" + not_identifier), false)) {
+						state.isolated = false;
+					}
+					stream.next();
+				}
 				if (state.keyword) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
 						state.keyword = false;
@@ -72,20 +90,9 @@ define(function() {
 						highlight = "keyword";
 					}
 				}
-				if (stream.match(new RegExp("^" + keyword), false)) {
-					if (stream.match(new RegExp("^(" + keyword + ")(" + not_identifier + "|$)"), false)) {
-						if (stream.column() !== 0) {
-							stream.backUp(1);
-							if (stream.match(new RegExp("^" + not_identifier), false)) {
-								state.keyword = true;
-								highlight = "keyword";
-							}
-							stream.next();
-						} else {
-							state.keyword = true;
-							highlight = "keyword";
-						}
-					}
+				if ((state.isolated) && (stream.match(new RegExp("^(" + keyword + ")(" + not_identifier + "|$)"), false))) {
+					state.keyword = true;
+					highlight = "keyword";
 				}
 				if (state.parameter_list) {
 					if (stream.match(/^\)/, false)) {
@@ -101,18 +108,9 @@ define(function() {
 						highlight = "keyword";
 					}
 				}
-				if (stream.match(new RegExp("^@" + identifier), false)) {
-					if (stream.column() !== 0) {
-						stream.backUp(1);
-						if (stream.match(new RegExp("^" + not_identifier), false)) {
-							state.this = true;
-							highlight = "keyword";
-						}
-						stream.next();
-					} else {
-						state.this = true;
-						highlight = "keyword";
-					}
+				if ((state.isolated) && (stream.match(new RegExp("^@" + identifier), false))) {
+					state.this = true;
+					highlight = "keyword";
 				}
 				if (state.parameter) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
@@ -183,18 +181,9 @@ define(function() {
 						highlight = "number";
 					}
 				}
-				if (stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false)) {
-					if (stream.column() !== 0) {
-						stream.backUp(1);
-						if (stream.match(new RegExp("^" + not_identifier), false)) {
-							state.number = true;
-							highlight = "number";
-						}
-						stream.next();
-					} else {
-						state.number = true;
-						highlight = "number";
-					}
+				if ((state.isolated) && (stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false))) {
+					state.number = true;
+					highlight = "number";
 				}
 				if (state.constant) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
@@ -203,20 +192,9 @@ define(function() {
 						highlight = "string";
 					}
 				}
-				if (stream.match(new RegExp("^" + constant), false)) {
-					if (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false)) {
-						if (stream.column() !== 0) {
-							stream.backUp(1);
-							if (stream.match(new RegExp("^" + not_identifier), false)) {
-								state.constant = true;
-								highlight = "string";
-							}
-							stream.next();
-						} else {
-							state.constant = true;
-							highlight = "string";
-						}
-					}
+				if ((state.isolated) && (stream.match(new RegExp("^" + constant), false))) {
+					state.constant = true;
+					highlight = "string";
 				}
 				if (state.string_1) {
 					if (stream.match(/^\\\\"/, false)) {
@@ -319,6 +297,7 @@ define(function() {
 					comment_line: false,
 					constant: false,
 					function: false,
+					isolated: false,
 					keyword: false,
 					method: false,
 					number: false,
