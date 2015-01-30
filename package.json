@@ -22,7 +22,7 @@
 		"highlighting",
 		"syntax"
 	],
-	"license": "",
+	"license": "MIT",
 	"main": "main.js",
 	"name": "brackets-coffeescript",
 	"repository": {
