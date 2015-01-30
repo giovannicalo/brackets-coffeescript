@@ -51,7 +51,6 @@ define(function() {
 			"when",
 			"while"
 		];
-		//var defined = [];
 		var constant = constant_list.join("|");
 		var identifier = "[a-zA-Z\\$_]+[a-zA-Z0-9\\$_]*";
 		var keyword = keyword_list.join("|");
@@ -67,7 +66,6 @@ define(function() {
 				var highlight = "";
 				if (!state.isolated) {
 					if (stream.sol()) {
-						console.log("Start: " + stream.column() + ": SOL");
 						state.isolated = true;
 					} else {
 						stream.backUp(1);
@@ -155,10 +153,6 @@ define(function() {
 				if (stream.match(new RegExp("^" + identifier + "(\\[.*\\])*" + whitespace + "=([^=]|$)"), false)) {
 					state.variable = true;
 					highlight = "def";
-					//TODO: Define match as the output of stream.match() before uncommenting
-					//if ((match = match[0].match((new RegExp("^" + identifier))[0]) && (defined.indexOf(match) === -1)) {
-					//	defined.push(match);
-					//}
 				}
 				if (state.method) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
