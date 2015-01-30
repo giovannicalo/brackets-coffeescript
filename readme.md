@@ -23,4 +23,3 @@ The extension isn't listed in the [Brackets Extension Registry](https://brackets
 * Subsequent division operators on the same line are incorrectly recognized as regular expressions.
 * All variables assignments are recognized as definitions.
 * No help is provided with indentation.
-* Code needs a cleanup and some style adjustments.
