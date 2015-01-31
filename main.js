@@ -60,6 +60,20 @@ define(function() {
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
 		var whitespace = "[\\t ]*";
+		var process_regexp_flag_list = function(stream) {
+			stream.next();
+			if (stream.match(/^(gim|gmi|igm|img|mgi|mig)/, false)) {
+				stream.next();
+				stream.next();
+				stream.next();
+			} else if (stream.match(/^(gi|gm|ig|im|mg|mi)/, false)) {
+				stream.next();
+				stream.next();
+			} else if (stream.match(/^(g|i|m)/, false)) {
+				stream.next();
+			}
+			stream.backUp(1);
+		};
 		return {
 			token: function(stream, state) {
 				var highlight = "";
@@ -225,18 +239,7 @@ define(function() {
 						highlight = "string";
 						stream.next();
 						stream.next();
-						stream.next();
-						if (stream.match(/^(gim|gmi|igm|img|mgi|mig)/, false)) {
-							stream.next();
-							stream.next();
-							stream.next();
-						} else if (stream.match(/^(gi|gm|ig|im|mg|mi)/, false)) {
-							stream.next();
-							stream.next();
-						} else if (stream.match(/^(g|i|m)/, false)) {
-							stream.next();
-						}
-						stream.backUp(1);
+						process_regexp_flag_list(stream);
 					} else {
 						highlight = "string";
 					}
@@ -251,18 +254,7 @@ define(function() {
 					} else if ((stream.sol()) || (stream.match(/^\//, false))) {
 						state.regexp = false;
 						highlight = "string";
-						stream.next();
-						if (stream.match(/^(gim|gmi|igm|img|mgi|mig)/, false)) {
-							stream.next();
-							stream.next();
-							stream.next();
-						} else if (stream.match(/^(gi|gm|ig|im|mg|mi)/, false)) {
-							stream.next();
-							stream.next();
-						} else if (stream.match(/^(g|i|m)/, false)) {
-							stream.next();
-						}
-						stream.backUp(1);
+						process_regexp_flag_list(stream);
 					} else {
 						highlight = "string";
 					}
