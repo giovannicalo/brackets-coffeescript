@@ -186,7 +186,7 @@ define(function() {
 						highlight = "string";
 					}
 				}
-				if ((state.isolated) && (stream.match(new RegExp("^" + constant), false))) {
+				if ((state.isolated) && (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false))) {
 					state.constant = true;
 					highlight = "string";
 				}
