@@ -220,6 +220,31 @@ define(function() {
 					state.string_literal = true;
 					highlight = "string";
 				}
+				if (state.regexp_block) {
+					if (stream.match(/^\/{3}/, false)) {
+						state.regexp_block = false;
+						highlight = "string";
+						stream.next();
+						stream.next();
+						stream.next();
+						if (stream.match(/^(gim|gmi|igm|img|mgi|mig)/, false)) {
+							stream.next();
+							stream.next();
+							stream.next();
+						} else if (stream.match(/^(gi|gm|ig|im|mg|mi)/, false)) {
+							stream.next();
+							stream.next();
+						} else if (stream.match(/^(g|i|m)/, false)) {
+							stream.next();
+						}
+						stream.backUp(1);
+					} else {
+						highlight = "string";
+					}
+				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(/^\/{3}/, false))) {
+					state.regexp_block = true;
+					highlight = "string";
+				}
 				if (state.regexp) {
 					if (stream.match(/^\\\//, false)) {
 						highlight = "string";
@@ -228,18 +253,21 @@ define(function() {
 						state.regexp = false;
 						highlight = "string";
 						stream.next();
-						for (i = 0; i < 3; i++) {
-							if (stream.match(/^(g|m|i)/, false)) {
-								stream.next();
-							} else {
-								stream.backUp(1);
-								break;
-							}
+						if (stream.match(/^(gim|gmi|igm|img|mgi|mig)/, false)) {
+							stream.next();
+							stream.next();
+							stream.next();
+						} else if (stream.match(/^(gi|gm|ig|im|mg|mi)/, false)) {
+							stream.next();
+							stream.next();
+						} else if (stream.match(/^(g|i|m)/, false)) {
+							stream.next();
 						}
+						stream.backUp(1);
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^" + regexp), false))) {
+				} else if ((!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^" + regexp), false))) {
 					state.regexp = true;
 					highlight = "string";
 				}
@@ -305,6 +333,7 @@ define(function() {
 					parameter_list: false,
 					property: false,
 					regexp: false,
+					regexp_block: false,
 					string_interpolated: false,
 					string_interpolation: false,
 					string_literal: false,
