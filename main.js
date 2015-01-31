@@ -190,7 +190,7 @@ define(function() {
 					state.constant = true;
 					highlight = "string";
 				}
-				if (state.string_1) {
+				if (state.string_interpolated) {
 					if (stream.match(/^\\\\"/, false)) {
 						highlight = "string";
 						stream.next();
@@ -198,16 +198,16 @@ define(function() {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^"/, false)) {
-						state.string_1 = false;
+						state.string_interpolated = false;
 						highlight = "string";
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_2) && (stream.match(/^"/, false))) {
-					state.string_1 = true;
+				} else if ((!state.string_literal) && (stream.match(/^"/, false))) {
+					state.string_interpolated = true;
 					highlight = "string";
 				}
-				if (state.string_2) {
+				if (state.string_literal) {
 					if (stream.match(/^\\\\'/, false)) {
 						highlight = "string";
 						stream.next();
@@ -215,13 +215,13 @@ define(function() {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^'/, false)) {
-						state.string_2 = false;
+						state.string_literal = false;
 						highlight = "string";
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_1) && (stream.match(/^'/, false))) {
-					state.string_2 = true;
+				} else if ((!state.string_interpolated) && (stream.match(/^'/, false))) {
+					state.string_literal = true;
 					highlight = "string";
 				}
 				if (state.regexp) {
@@ -243,7 +243,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_1) && (!state.string_2) && (stream.match(new RegExp("^" + regexp), false))) {
+				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^" + regexp), false))) {
 					state.regexp = true;
 					highlight = "string";
 				}
@@ -256,7 +256,7 @@ define(function() {
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.string_1) && (!state.string_2) && (stream.match(/^###/, false))) {
+				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(/^###/, false))) {
 					state.comment_block = true;
 					highlight = "comment";
 					stream.next();
@@ -268,7 +268,7 @@ define(function() {
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.comment_block) && (!state.string_1) && (!state.string_2) && (stream.match(/^#/, false))) {
+				} else if ((!state.comment_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#/, false))) {
 					if (stream.column() > 1) {
 						stream.backUp(2);
 						if (!stream.match(/^###/, false)) {
@@ -281,6 +281,17 @@ define(function() {
 						state.comment_line = true;
 						highlight = "comment";
 					}
+				}
+				if (state.string_interpolation) {
+					if (stream.match(/^\}/, false)) {
+						state.string_interpolation = false;
+						highlight = "minus";
+					} else {
+						highlight = "minus";
+					}
+				} else if ((state.string_interpolated) && (stream.match(/^#\{.*\}/, false))) {
+					state.string_interpolation = true;
+					highlight = "minus";
 				}
 				stream.next();
 				return highlight;
@@ -299,8 +310,9 @@ define(function() {
 					parameter_list: false,
 					property: false,
 					regexp: false,
-					string_1: false,
-					string_2: false,
+					string_interpolated: false,
+					string_interpolation: false,
+					string_literal: false,
 					this: false,
 					variable: false
 				};
