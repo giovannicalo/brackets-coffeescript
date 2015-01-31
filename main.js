@@ -191,10 +191,7 @@ define(function() {
 					highlight = "string";
 				}
 				if (state.string_interpolated) {
-					if (stream.match(/^\\\\"/, false)) {
-						highlight = "string";
-						stream.next();
-					} else if (stream.match(/^\\"/, false)) {
+					if ((stream.match(/^\\\\"/, false)) || (stream.match(/^\\"/, false))) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^"/, false)) {
@@ -208,10 +205,7 @@ define(function() {
 					highlight = "string";
 				}
 				if (state.string_literal) {
-					if (stream.match(/^\\\\'/, false)) {
-						highlight = "string";
-						stream.next();
-					} else if (stream.match(/^\\'/, false)) {
+					if ((stream.match(/^\\\\'/, false)) || (stream.match(/^\\'/, false))) {
 						highlight = "string";
 						stream.next();
 					} else if (stream.match(/^'/, false)) {
