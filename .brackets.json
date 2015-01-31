@@ -1,4 +1,16 @@
 {
+	"linting.enabled": true,
+	"linting.prefer": [
+		"CoffeeLint",
+		"CSSLint",
+		"HTMLHint",
+		"JSCS",
+		"JSHint",
+		"JSONLint",
+		"W3CValidation"
+	],
+	"linting.usePreferredOnly": true,
+	"softTabs": false,
 	"spaceUnits": 4,
 	"tabSize": 4,
 	"useTabChar": true
