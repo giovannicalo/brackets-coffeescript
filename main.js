@@ -60,7 +60,6 @@ define(function() {
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
 		var whitespace = "[\\t ]*";
-		var i = 0;
 		return {
 			token: function(stream, state) {
 				var highlight = "";
