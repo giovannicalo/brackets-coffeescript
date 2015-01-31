@@ -7,7 +7,7 @@ It uses the same coloring conventions as the JavaScript mode.
 
 Improved syntax highlighting comes at the cost of some advanced features of the official mode.
 
-![Sample](http://i.imgur.com/Pu2v415.png)
+![Sample](http://i.imgur.com/rsg0Jr9.png)
 
 ## Installation
 The extension isn't listed in the [Brackets Extension Registry](https://brackets-registry.aboutweb.com/) yet, thus requiring manual installation.
@@ -18,7 +18,6 @@ The extension isn't listed in the [Brackets Extension Registry](https://brackets
 4. In Brackets, `Debug > Reload With Extensions` or `F5`
 
 ## Known Issues
-* String interpolation isn't colored as it should be.
 * Multiline regular expressions aren't recognized yet.
 * Subsequent division operators on the same line are incorrectly recognized as regular expressions.
 * All variables assignments are recognized as definitions.

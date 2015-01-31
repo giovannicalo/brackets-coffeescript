@@ -191,14 +191,16 @@ define(function() {
 					highlight = "string";
 				}
 				if (state.string_interpolated) {
-					if ((stream.match(/^\\\\"/, false)) || (stream.match(/^\\"/, false))) {
-						highlight = "string";
-						stream.next();
-					} else if (stream.match(/^"/, false)) {
-						state.string_interpolated = false;
-						highlight = "string";
-					} else {
-						highlight = "string";
+					if (!state.string_interpolation) {
+						if ((stream.match(/^\\\\"/, false)) || (stream.match(/^\\"/, false))) {
+							highlight = "string";
+							stream.next();
+						} else if (stream.match(/^"/, false)) {
+							state.string_interpolated = false;
+							highlight = "string";
+						} else {
+							highlight = "string";
+						}
 					}
 				} else if ((!state.string_literal) && (stream.match(/^"/, false))) {
 					state.string_interpolated = true;
@@ -280,12 +282,11 @@ define(function() {
 					if (stream.match(/^\}/, false)) {
 						state.string_interpolation = false;
 						highlight = "minus";
-					} else {
-						highlight = "minus";
 					}
 				} else if ((state.string_interpolated) && (stream.match(/^#\{.*\}/, false))) {
 					state.string_interpolation = true;
 					highlight = "minus";
+					stream.next();
 				}
 				stream.next();
 				return highlight;
