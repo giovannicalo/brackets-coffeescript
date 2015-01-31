@@ -1,11 +1,7 @@
 {
-	"author": {
-		"email": "",
-		"name": "Giovanni Calò",
-		"url": "https://github.com/giovannicalo"
-	},
+	"author": "Giovanni Calò (https://github.com/giovannicalo)",
 	"bugs": {
-		"url": "http://www.github.com/giovannicalo/brackets-coffeescript/issues"
+		"url": "https://www.github.com/giovannicalo/brackets-coffeescript/issues"
 	},
 	"config": {},
 	"dependencies": {},
@@ -14,7 +10,7 @@
 	"engines": {
 		"brackets": "^1.1.0"
 	},
-	"homepage": "http://www.github.com/giovannicalo/brackets-coffeescript",
+	"homepage": "https://www.github.com/giovannicalo/brackets-coffeescript",
 	"keywords": [
 		"coffee",
 		"coffeescript",
@@ -27,7 +23,7 @@
 	"name": "brackets-coffeescript",
 	"repository": {
 		"type": "git",
-		"url": "http://www.github.com/giovannicalo/brackets-coffeescript.git"
+		"url": "https://www.github.com/giovannicalo/brackets-coffeescript.git"
 	},
 	"title": "CoffeeScript",
 	"version": "0.0.0"
