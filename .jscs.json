@@ -8,7 +8,9 @@
 		"string"
 	],
 	"disallowKeywordsOnNewLine": [
-		"else"
+		"catch",
+		"else",
+		"finally"
 	],
 	"disallowMixedSpacesAndTabs": true,
 	"disallowMultipleLineStrings": true,
