@@ -13,6 +13,7 @@
 		"finally"
 	],
 	"disallowMixedSpacesAndTabs": true,
+	"disallowMultipleLineBreaks": true,
 	"disallowMultipleLineStrings": true,
 	"disallowMultipleVarDecl": true,
 	"disallowNewlineBeforeBlockStatements": true,
@@ -38,13 +39,26 @@
 	"disallowYodaConditions": true,
 	"requireAnonymousFunctions": true,
 	"requireBlocksOnNewline": true,
-	"requireCapitalizedComments": true,
 	"requireCommaBeforeLineBreak": true,
 	"requireCurlyBraces": true,
 	"requireDotNotation": true,
 	"requireLineFeedAtFileEnd": true,
 	"requirePaddingNewLinesInObjects": true,
 	"requireParenthesesAroundIIFE": true,
+	"requireSpaceAfterBinaryOperators": true,
+	"requireSpaceAfterKeywords": true,
+	"requireSpaceBeforeBinaryOperators": true,
+	"requireSpaceBeforeBlockStatements": true,
+	"requireSpaceBeforeKeywords": true,
+	"requireSpaceBeforeObjectValues": true,
+	"requireSpaceBetweenArguments": true,
+	"requireSpacesInConditionalExpression": {
+		"afterConsequent": true,
+		"afterTest": true,
+		"beforeAlternate": true,
+		"beforeConsequent": true
+	},
+	"requireSpacesInForStatement": true,
 	"requireSpacesInFunctionDeclaration": {
 		"beforeOpeningCurlyBrace": true
 	},
