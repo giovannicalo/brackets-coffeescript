@@ -52,12 +52,12 @@ define(function() {
 			"while"
 		];
 		var constant = constant_list.join("|");
-		var identifier = "[a-zA-Z\\$_]+[a-zA-Z0-9\\$_]*";
+		var identifier = "[a-zA-Z\\$_]+[\\w\\$]*";
 		var keyword = keyword_list.join("|");
 		var number = "((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\\d]*\\.?[\\d]+(?:e[\\+\\-]\\d+)?))";
 		var regexp = "\\/((?![*+?])(?:[^\\r\\n\\[/\\\\]|\\\\.|\\[(?:[^\\r\\n\\]\\\\]|\\\\.)*\\])+)\\/";
 		var regexp_flag = "\\b(([gimy])(?!.*\\2))+\\b";
-		var not_identifier = "[^a-zA-Z0-9\\$_]";
+		var not_identifier = "[^\\w\\$]";
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
 		var whitespace = "[\\t ]*";
