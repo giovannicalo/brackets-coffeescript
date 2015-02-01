@@ -302,7 +302,7 @@ define(function() {
 						state.string_interpolation = false;
 						highlight = "minus";
 					}
-				} else if ((state.string_interpolated) && (stream.match(/^#\{.*\}/, false))) {
+				} else if ((state.string_interpolated) && (stream.match(/^#\{/, false))) {
 					state.string_interpolation = true;
 					highlight = "minus";
 					stream.next();
