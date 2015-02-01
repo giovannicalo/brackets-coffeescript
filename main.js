@@ -269,7 +269,7 @@ define(function() {
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#{3}/, false))) {
+				} else if ((!state.regexp) && (!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#{3}/, false))) {
 					state.comment_block = true;
 					highlight = "comment";
 					stream.next();
@@ -281,7 +281,7 @@ define(function() {
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.comment_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#/, false))) {
+				} else if ((!state.comment_block) && (!state.regexp) && (!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#/, false))) {
 					if (stream.column() > 1) {
 						stream.backUp(2);
 						if (!stream.match(/^#{3}/, false)) {
@@ -294,6 +294,9 @@ define(function() {
 						state.comment_line = true;
 						highlight = "comment";
 					}
+				} else if ((state.regexp_block) && (stream.match(/^[\t ]+#/, false))) {
+					state.comment_line = true;
+					highlight = "comment";
 				}
 				if (state.string_interpolation) {
 					if ((!state.comment_block) && (!state.regexp) && (!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^\}/, false))) {
