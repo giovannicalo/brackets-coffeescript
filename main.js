@@ -56,24 +56,11 @@ define(function() {
 		var keyword = keyword_list.join("|");
 		var number = "((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\\d]*\\.?[\\d]+(?:e[\\+\\-]\\d+)?))";
 		var regexp = "\\/((?![*+?])(?:[^\\r\\n\\[/\\\\]|\\\\.|\\[(?:[^\\r\\n\\]\\\\]|\\\\.)*\\])+)\\/";
+		var regexp_flag = "\\b(([gimy])(?!.*\\2))+\\b";
 		var not_identifier = "[^a-zA-Z0-9\\$_]";
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
 		var whitespace = "[\\t ]*";
-		var process_regexp_flag_list = function(stream) {
-			stream.next();
-			if (stream.match(/^(gim|gmi|igm|img|mgi|mig)/, false)) {
-				stream.next();
-				stream.next();
-				stream.next();
-			} else if (stream.match(/^(gi|gm|ig|im|mg|mi)/, false)) {
-				stream.next();
-				stream.next();
-			} else if (stream.match(/^(g|i|m)/, false)) {
-				stream.next();
-			}
-			stream.backUp(1);
-		};
 		return {
 			token: function(stream, state) {
 				var highlight = "";
@@ -237,7 +224,9 @@ define(function() {
 						highlight = "string";
 						stream.next();
 						stream.next();
-						process_regexp_flag_list(stream);
+						stream.next();
+						stream.match(new RegExp("^" + regexp_flag));
+						stream.backUp(1);
 					} else {
 						highlight = "string";
 					}
@@ -252,7 +241,9 @@ define(function() {
 					} else if ((stream.sol()) || (stream.match(/^\//, false))) {
 						state.regexp = false;
 						highlight = "string";
-						process_regexp_flag_list(stream);
+						stream.next();
+						stream.match(new RegExp("^" + regexp_flag));
+						stream.backUp(1);
 					} else {
 						highlight = "string";
 					}
