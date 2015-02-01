@@ -296,7 +296,7 @@ define(function() {
 					}
 				}
 				if (state.string_interpolation) {
-					if (stream.match(/^\}/, false)) {
+					if ((!state.comment_block) && (!state.regexp) && (!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^\}/, false))) {
 						state.string_interpolation = false;
 						state.string_interpolated = true;
 						highlight = "minus";
