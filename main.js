@@ -229,7 +229,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_interpolated) && (stream.match(/^'/, false))) {
+				} else if (((!state.string_interpolated) || (state.string_interpolation)) && (stream.match(/^'/, false))) {
 					state.string_literal = true;
 					highlight = "string";
 				}
@@ -243,7 +243,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(/^\/{3}/, false))) {
+				} else if (((!state.string_interpolated) || (state.string_interpolation)) && (!state.string_literal) && (stream.match(/^\/{3}/, false))) {
 					state.regexp_block = true;
 					highlight = "string";
 				}
@@ -258,7 +258,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^" + regexp), false))) {
+				} else if ((!state.regexp_block) && ((!state.string_interpolated) || (state.string_interpolation)) && (!state.string_literal) && (stream.match(new RegExp("^" + regexp), false))) {
 					state.regexp = true;
 					highlight = "string";
 				}
@@ -271,7 +271,7 @@ define(function() {
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#{3}/, false))) {
+				} else if (((!state.string_interpolated) || (state.string_interpolation)) && (!state.string_literal) && (stream.match(/^#{3}/, false))) {
 					state.comment_block = true;
 					highlight = "comment";
 					stream.next();
@@ -283,7 +283,7 @@ define(function() {
 					} else {
 						highlight = "comment";
 					}
-				} else if ((!state.comment_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#/, false))) {
+				} else if ((!state.comment_block) && ((!state.string_interpolated) || (state.string_interpolation)) && (!state.string_literal) && (stream.match(/^#/, false))) {
 					if (stream.column() > 1) {
 						stream.backUp(2);
 						if (!stream.match(/^#{3}/, false)) {
