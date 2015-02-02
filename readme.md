@@ -18,6 +18,5 @@ The extension isn't listed in the [Brackets Extension Registry](https://brackets
 4. In Brackets, `Debug > Reload With Extensions` or `F5`
 
 ## Known Issues
-* Subsequent division operators on the same line are incorrectly recognized as regular expressions.
 * All variables assignments are recognized as definitions.
 * No help is provided with indentation.
