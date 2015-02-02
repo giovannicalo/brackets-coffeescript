@@ -106,7 +106,7 @@ define(function() {
 						highlight = "keyword";
 					}
 				}
-				if ((state.isolated) && (stream.match(new RegExp("^@" + identifier), false))) {
+				if ((state.isolated) && (stream.match(new RegExp("^@(" + identifier + ")?"), false))) {
 					state.this = true;
 					highlight = "keyword";
 				}
