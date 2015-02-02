@@ -56,7 +56,7 @@ define(function() {
 		var keyword = keyword_list.join("|");
 		var number = "((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\\d]*\\.?[\\d]+(?:e[\\+\\-]\\d+)?))";
 		var regexp = "\\/((?![*+?\\s])(?:[^\\r\\n\\[/\\\\]|\\\\.|\\[(?:[^\\r\\n\\]\\\\]|\\\\.)*\\])+)\\/";
-		var regexp_flag = "\\b(([gimy])(?!.*\\2))+\\b";
+		var regexp_flag = "\\b(([gimuy])(?![gimuy]*\\2))+\\b";
 		var not_identifier = "[^\\w\\$]";
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
