@@ -10,7 +10,14 @@ Improved syntax highlighting comes at the cost of some advanced features of the 
 ![Sample](http://i.imgur.com/goPBJdx.png)
 
 ## Installation
-The extension isn't listed in the [Brackets Extension Registry](https://brackets-registry.aboutweb.com/) yet, thus requiring manual installation.
+
+### Extension Manager
+
+1. In Brackets, `File > Extension Manager...`
+2. Search for the extension, copy and paste the repository URL or download it as a ZIP file, then drag and drop it in place
+3. Press `Install`
+
+### Manual
 
 1. Clone or download the repository.
 2. In Brackets, `Help > Show Extensions Folder`.
