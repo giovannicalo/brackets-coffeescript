@@ -7,7 +7,7 @@ It uses the same coloring conventions as the JavaScript mode.
 
 Improved syntax highlighting comes at the cost of some advanced features of the official mode.
 
-![Sample](http://i.imgur.com/goPBJdx.png)
+![Sample](http://i.imgur.com/EfwD6sY.png)
 
 ## Installation
 
