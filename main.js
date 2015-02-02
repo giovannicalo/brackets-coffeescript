@@ -99,16 +99,10 @@ define(function() {
 				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
 					state.parameter_list = true;
 				}
-				if (state.this) {
-					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
-						state.this = false;
-					} else {
-						highlight = "keyword";
-					}
-				}
-				if ((state.isolated) && (stream.match(new RegExp("^@(" + identifier + ")?"), false))) {
-					state.this = true;
-					highlight = "keyword";
+				if ((state.isolated) && (stream.match(new RegExp("^@"), false))) {
+					state.method = true;
+					stream.next();
+					return "keyword";
 				}
 				if (state.parameter) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
