@@ -132,8 +132,7 @@ define(function() {
 					} else {
 						highlight = "def";
 					}
-				}
-				if (stream.match(new RegExp("^" + identifier + whitespace + ":"), false)) {
+				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^(" + identifier + "|((\"|')?(?:(?:(?!\\3).)|\\\\\\3)*\\3))" + whitespace + ":"), false))) {
 					state.property = true;
 					highlight = "def";
 				}
@@ -194,7 +193,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_literal) && (stream.match(/^"/, false))) {
+				} else if ((!state.property) && (!state.string_literal) && (stream.match(/^"/, false))) {
 					state.string_interpolated = true;
 					highlight = "string";
 				}
@@ -208,7 +207,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.string_interpolated) && (stream.match(/^'/, false))) {
+				} else if ((!state.property) && (!state.string_interpolated) && (stream.match(/^'/, false))) {
 					state.string_literal = true;
 					highlight = "string";
 				}
