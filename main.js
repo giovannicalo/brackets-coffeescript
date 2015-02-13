@@ -193,7 +193,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.property) && (!state.string_literal) && (stream.match(/^"/, false))) {
+				} else if ((!state.comment_block) && (!state.comment_line) && (!state.property) && (!state.string_literal) && (stream.match(/^"/, false))) {
 					state.string_interpolated = true;
 					highlight = "string";
 				}
@@ -207,7 +207,7 @@ define(function() {
 					} else {
 						highlight = "string";
 					}
-				} else if ((!state.property) && (!state.string_interpolated) && (stream.match(/^'/, false))) {
+				} else if ((!state.comment_block) && (!state.comment_line) && (!state.property) && (!state.string_interpolated) && (stream.match(/^'/, false))) {
 					state.string_literal = true;
 					highlight = "string";
 				}
