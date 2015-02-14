@@ -92,6 +92,17 @@ define(function() {
 					state.keyword = true;
 					highlight = "keyword";
 				}
+				if (state.constant) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
+						state.constant = false;
+					} else {
+						highlight = "string";
+					}
+				}
+				if ((state.isolated) && (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false))) {
+					state.constant = true;
+					highlight = "string";
+				}
 				if (state.parameter_list) {
 					if (stream.match(/^\)/, false)) {
 						state.parameter_list = false;
@@ -171,17 +182,6 @@ define(function() {
 				if ((state.isolated) && (stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false))) {
 					state.number = true;
 					highlight = "number";
-				}
-				if (state.constant) {
-					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
-						state.constant = false;
-					} else {
-						highlight = "string";
-					}
-				}
-				if ((state.isolated) && (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false))) {
-					state.constant = true;
-					highlight = "string";
 				}
 				if (state.string_interpolated) {
 					if ((stream.match(/^\\{2}/, false)) || (stream.match(/^\\"/, false))) {
