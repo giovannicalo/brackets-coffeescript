@@ -110,9 +110,8 @@ define(function() {
 				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
 					state.parameter_list = true;
 				}
-				if ((state.isolated) && (stream.match(new RegExp("^@"), false))) {
+				if ((state.isolated) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^@")))) {
 					state.method = true;
-					stream.next();
 					return "keyword";
 				}
 				if (state.parameter) {
@@ -315,7 +314,6 @@ define(function() {
 					string_interpolated: false,
 					string_interpolation: false,
 					string_literal: false,
-					this: false,
 					variable: false
 				};
 			}
