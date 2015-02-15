@@ -110,7 +110,7 @@ define(function() {
 				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
 					state.parameter_list = true;
 				}
-				if ((state.isolated) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^@")))) {
+				if ((state.isolated) && (!state.string_interpolated) && (!state.string_literal) && (!state.comment_block) && (!state.comment_line) && (stream.match(new RegExp("^@")))) {
 					state.method = true;
 					return "keyword";
 				}
