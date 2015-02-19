@@ -322,7 +322,16 @@ define(function() {
 	code_mirror.defineMIME("text/coffeescript", "coffeescriptimproved");
 	language_manager.getLanguage("coffeescript").removeFileExtension("coffee");
 	language_manager.defineLanguage("coffeescriptimproved", {
-		fileExtensions: ["coffee"],
+		blockComment: [
+			"###",
+			"###"
+		],
+		fileExtensions: [
+			"coffee"
+		],
+		lineComment: [
+			"#"
+		],
 		mode: "coffeescriptimproved",
 		name: "CoffeeScript"
 	});
