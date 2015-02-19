@@ -327,6 +327,7 @@ define(function() {
 			"###"
 		],
 		fileExtensions: [
+			"cjsx",
 			"coffee"
 		],
 		lineComment: [
