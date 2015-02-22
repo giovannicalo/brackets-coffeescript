@@ -129,6 +129,28 @@ define(function() {
 						}
 					}
 				}
+				if (state.parameter_list) {
+					if (stream.match(/^\)/, false)) {
+						state.parameter_list = false;
+					}
+				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
+					state.parameter_list = true;
+				}
+				if (state.parameter) {
+					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
+						state.parameter = false;
+					} else {
+						highlight = "def";
+					}
+				}
+				if ((state.parameter_list) && (stream.match(new RegExp("^" + identifier), false))) {
+					state.parameter = true;
+					highlight = "def";
+				}
+				if ((state.isolated) && (!state.string_interpolated) && (!state.string_literal) && (!state.comment_block) && (!state.comment_line) && (stream.match(new RegExp("^@")))) {
+					state.method = true;
+					return "keyword";
+				}
 				if (state.keyword) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
 						state.keyword = false;
@@ -150,28 +172,6 @@ define(function() {
 				if ((state.isolated) && (stream.match(new RegExp("^(" + constant + ")(" + not_identifier + "|$)"), false))) {
 					state.constant = true;
 					highlight = "string";
-				}
-				if (state.parameter_list) {
-					if (stream.match(/^\)/, false)) {
-						state.parameter_list = false;
-					}
-				} else if (stream.match(/^\([^\n\r\(\)]*\)[\t ]*(->|=>)/, false)) {
-					state.parameter_list = true;
-				}
-				if ((state.isolated) && (!state.string_interpolated) && (!state.string_literal) && (!state.comment_block) && (!state.comment_line) && (stream.match(new RegExp("^@")))) {
-					state.method = true;
-					return "keyword";
-				}
-				if (state.parameter) {
-					if ((stream.sol()) || (stream.match(new RegExp("^" + not_identifier), false))) {
-						state.parameter = false;
-					} else {
-						highlight = "def";
-					}
-				}
-				if ((state.parameter_list) && (stream.match(new RegExp("^" + identifier), false))) {
-					state.parameter = true;
-					highlight = "def";
 				}
 				if (state.function) {
 					if ((stream.sol()) || (stream.match(/^(:|=)/, false))) {
