@@ -2,7 +2,7 @@ define(function() {
 	"use strict";
 	var language_manager = brackets.getModule("language/LanguageManager");
 	var code_mirror = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror");
-	code_mirror.defineMode("coffeescriptimproved", function() {
+	code_mirror.defineMode("coffeescriptimproved", function(config, parser_config) {
 		var constant_list = [
 			"false",
 			"no",
@@ -52,7 +52,7 @@ define(function() {
 			"while"
 		];
 		var constant = constant_list.join("|");
-		var identifier = "[a-zA-Z\\$_]+[\\w\\$]*";
+		var identifier = "[a-zA-Z\\$_][\\w\\$]*";
 		var keyword = keyword_list.join("|");
 		var number = "((?:0(?:(?:[bB][01]+)|(?:[oO][0-7]+)|(?:[xX][0-9a-fA-F]+)))|(?:[\\d]*\\.?[\\d]+(?:e[\\+\\-]\\d+)?))";
 		var regexp = "\\/((?![*+?\\s])(?:[^\\r\\n\\[/\\\\]|\\\\.|\\[(?:[^\\r\\n\\]\\\\]|\\\\.)*\\])+)\\/";
@@ -61,6 +61,10 @@ define(function() {
 		var not_keyword = "[^a-z]";
 		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
 		var whitespace = "[\\t ]*";
+		var xml_identifier = "[a-zA-Z:_][a-zA-Z0-9:_\\-\\.]*";
+		var xml_string = "(?:\"(?:(?:\\\")|[^\"])*\")|(?:'(?:(?:\\\')|[^'])*')";
+		var xml_value = "(?:\\{[\\s\\S]*?\\})";
+		var xml_element = "<\\/?(" + xml_identifier + ")(?: (?:" + xml_string + "|" + xml_value + "|[^<>\"'])*?)?(?:\\/)?" + whitespace + ">";
 		return {
 			token: function(stream, state) {
 				var highlight = "";
@@ -80,6 +84,50 @@ define(function() {
 						state.isolated = false;
 					}
 					stream.next();
+				}
+				if (parser_config.cjsx) {
+					if (state.xml_element) {
+						if (stream.match(/^\/?>/)) {
+							state.xml_attribute = false;
+							state.xml_element = false;
+							state.xml_string = false;
+							state.xml_value = false;
+							highlight = "keyword";
+						}
+					} else if ((!state.string_interpolated) && (!state.string_literal) && (!state.regexp) && (!state.regexp_block) && (stream.match(new RegExp("^" + xml_element), false))) {
+						state.xml_element = true;
+						stream.match(new RegExp("<\\/?" + xml_identifier));
+						return "keyword";
+					}
+					if (state.xml_element) {
+						if (state.xml_attribute) {
+							if (stream.match(/^(?:\/>)|[\t=> ]/)) {
+								state.xml_attribute = false;
+								return highlight;
+							} else {
+								highlight = "number";
+							}
+						} else if ((state.isolated) && (!state.xml_string) && (!state.xml_value) && (stream.match(new RegExp("^" + identifier), false))) {
+							state.xml_attribute = true;
+							highlight = "number";
+						}
+						if (stream.match(new RegExp("^" + xml_string))) {
+							return "string";
+						}
+						if (state.xml_value) {
+							if (stream.match(/^\}/)) {
+								state.xml_value = false;
+								return "minus";
+							}
+						} else if (stream.match(new RegExp("^" + xml_value), false)) {
+							state.xml_value = true;
+							highlight = "minus";
+						}
+						if (!state.xml_value) {
+							stream.next();
+							return highlight;
+						}
+					}
 				}
 				if (state.keyword) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_keyword), false))) {
@@ -314,7 +362,11 @@ define(function() {
 					string_interpolated: false,
 					string_interpolation: false,
 					string_literal: false,
-					variable: false
+					variable: false,
+					xml_attribute: false,
+					xml_element: false,
+					xml_string: false,
+					xml_value: false
 				};
 			}
 		};
