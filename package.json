@@ -5,17 +5,19 @@
 	},
 	"config": {},
 	"dependencies": {},
-	"description": "Improves syntax highlighting for CoffeeScript.",
+	"description": "Improves syntax highlighting for CoffeeScript and CJSX.",
 	"devDependencies": {},
 	"engines": {
 		"brackets": "^1.1.0"
 	},
 	"homepage": "https://github.com/giovannicalo/brackets-coffeescript",
 	"keywords": [
+		"cjsx",
 		"coffee",
 		"coffeescript",
 		"highlight",
 		"highlighting",
+		"react",
 		"syntax"
 	],
 	"license": "MIT",
