@@ -1,5 +1,5 @@
 # Brackets CoffeeScript
-An extension for [Brackets](https://github.com/adobe/brackets) that improves [CoffeeScript](https://github.com/jashkenas/coffeescript) syntax highlighting.
+An extension for [Brackets](https://github.com/adobe/brackets) that improves [CoffeeScript](https://github.com/jashkenas/coffeescript) and [CJSX](https://github.com/jsdf/coffee-react-transform) syntax highlighting.
 
 It is meant as a temporary solution to use while waiting for an improved [CodeMirror](https://github.com/codemirror/CodeMirror) mode.
 
@@ -7,7 +7,8 @@ It uses the same coloring conventions as the JavaScript mode.
 
 Improved syntax highlighting comes at the cost of some advanced features of the official mode.
 
-![Sample](http://i.imgur.com/EfwD6sY.png)
+![CoffeeScript Sample](http://i.imgur.com/6zT913M.png)
+![CJSX Sample](http://i.imgur.com/OcnMqfA.png)
 
 ## Installation
 
@@ -26,4 +27,5 @@ Improved syntax highlighting comes at the cost of some advanced features of the 
 
 ## Known Issues
 * All variables assignments are recognized as definitions.
+* Curly braces break string interpolation highlighting.
 * No help is provided with indentation.
