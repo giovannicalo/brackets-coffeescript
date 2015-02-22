@@ -319,21 +319,47 @@ define(function() {
 			}
 		};
 	});
-	code_mirror.defineMIME("text/coffeescript", "coffeescriptimproved");
+	code_mirror.defineMIME("text/cjsx", {
+		cjsx: true,
+		name: "coffeescriptimproved"
+	});
+	code_mirror.defineMIME("text/coffeescript", {
+		cjsx: false,
+		name: "coffeescriptimproved"
+	});
 	language_manager.getLanguage("coffeescript").removeFileExtension("coffee");
+	language_manager.defineLanguage("cjsx", {
+		blockComment: [
+			"###",
+			"###"
+		],
+		fileExtensions: [
+			"cjsx"
+		],
+		lineComment: [
+			"#"
+		],
+		mode: [
+			"coffeescriptimproved",
+			"text/cjsx"
+		],
+		name: "CJSX"
+	});
 	language_manager.defineLanguage("coffeescriptimproved", {
 		blockComment: [
 			"###",
 			"###"
 		],
 		fileExtensions: [
-			"cjsx",
 			"coffee"
 		],
 		lineComment: [
 			"#"
 		],
-		mode: "coffeescriptimproved",
+		mode: [
+			"coffeescriptimproved",
+			"text/coffeescript"
+		],
 		name: "CoffeeScript"
 	});
 });
