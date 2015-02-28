@@ -212,12 +212,8 @@ define(function() {
 						highlight = "def";
 					}
 				}
-				if ((stream.column() !== 0) && (stream.match(new RegExp("^\\." + identifier), false))) {
-					stream.backUp(1);
-					if (stream.match(/^\S/, false)) {
-						state.method = true;
-					}
-					stream.next();
+				if ((stream.match(new RegExp("^\\." + identifier), false))) {
+					state.method = true;
 				}
 				if (state.number) {
 					if ((stream.sol()) || (stream.match(new RegExp("^" + not_number), false))) {
