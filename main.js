@@ -302,12 +302,11 @@ define(function() {
 					stream.next();
 					stream.next();
 				}
+				if (stream.sol()) {
+					state.comment_line = false;
+				}
 				if (state.comment_line) {
-					if (stream.sol()) {
-						state.comment_line = false;
-					} else {
-						highlight = "comment";
-					}
+					highlight = "comment";
 				} else if ((!state.comment_block) && (!state.regexp) && (!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(/^#/, false))) {
 					if (stream.column() > 1) {
 						stream.backUp(2);
