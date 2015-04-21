@@ -190,7 +190,7 @@ define(function() {
 					} else {
 						highlight = "def";
 					}
-				} else if ((!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^(" + identifier + "|((\"|')?(?:(?:(?!\\3).)|\\\\\\3)*\\3))" + whitespace + ":"), false))) {
+				} else if ((!state.regexp) && (!state.regexp_block) && (!state.string_interpolated) && (!state.string_literal) && (stream.match(new RegExp("^(" + identifier + "|((\"|')?(?:(?:(?!\\3).)|\\\\\\3)*\\3))" + whitespace + ":"), false))) {
 					state.property = true;
 					highlight = "def";
 				}
