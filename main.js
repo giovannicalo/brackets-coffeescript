@@ -49,7 +49,8 @@ define(function() {
 			"unless",
 			"until",
 			"when",
-			"while"
+			"while",
+			"yield"
 		];
 		var constant = constant_list.join("|");
 		var identifier = "[a-zA-Z\\$_][\\w\\$]*";
