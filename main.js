@@ -272,7 +272,15 @@ define(function() {
 					highlight = "string";
 				}
 				if (state.regexp) {
-					if (stream.match(/^\\\//, false)) {
+					if (stream.match(/^\\\\\//, false)) {
+						state.regexp = false;
+						highlight = "string";
+						stream.next();
+						stream.next();
+						stream.next();
+						stream.match(new RegExp("^" + regexp_flag));
+						stream.backUp(1);
+					} else if (stream.match(/^\\\//, false)) {
 						highlight = "string";
 						stream.next();
 					} else if ((stream.sol()) || (stream.match(/^\//, false))) {
