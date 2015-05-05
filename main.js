@@ -60,7 +60,7 @@ define(function() {
 		var regexp_flag = "\\b(([gimuy])(?![gimuy]*\\2))+\\b";
 		var not_identifier = "[^\\w\\$]";
 		var not_keyword = "[^a-z]";
-		var not_number = "[^0-9a-fA-FoxOX\\+\\-\\.]";
+		var not_number = "([^0-9a-fA-FoxOX\\+\\-\\.]|\\.{2,})";
 		var whitespace = "[\\t ]*";
 		var xml_identifier = "[a-zA-Z:_][a-zA-Z0-9:_\\-\\.]*";
 		var xml_string = "(?:\"(?:(?:\\\")|[^\"])*\")|(?:'(?:(?:\\\')|[^'])*')";
@@ -224,8 +224,12 @@ define(function() {
 					}
 				}
 				if ((state.isolated) && (stream.match(new RegExp("^" + number + "(" + not_identifier + "|$)"), false))) {
-					state.number = true;
-					highlight = "number";
+					stream.backUp(1);
+					if (!stream.match(/^\.{2,}/, false)) {
+						state.number = true;
+						highlight = "number";
+					}
+					stream.next();
 				}
 				if (state.string_interpolated) {
 					if ((stream.match(/^\\{2}/, false)) || (stream.match(/^\\"/, false))) {
